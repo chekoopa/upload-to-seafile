@@ -1,0 +1,52 @@
+name: 'Seafile Upload'
+description: 'Upload files to a Seafile server'
+author: 'Mikhail Chekan'
+
+inputs:
+  server-url:
+    description: 'Seafile server URL (e.g., https://seafile.example.com)'
+    required: true
+  username:
+    description: 'Seafile username'
+    required: true
+  password:
+    description: 'Seafile password'
+    required: true
+  repo-id:
+    description: 'Seafile repository/library ID'
+    required: true
+  remote-path:
+    description: 'Destination path in Seafile (e.g., /uploads)'
+    required: true
+    default: '/'
+  local-path:
+    description: 'Local file pattern to upload (supports glob)'
+    required: true
+  overwrite:
+    description: 'Overwrite existing files (true/false)'
+    required: false
+    default: 'false'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+    
+    - name: Install dependencies
+      run: pip install requests
+      shell: bash
+    
+    - name: Run upload script
+      run: python ${{ github.action_path }}/upload.py
+      shell: bash
+      env:
+        SEAFILE_SERVER: ${{ inputs.server-url }}
+        SEAFILE_USER: ${{ inputs.username }}
+        SEAFILE_PASS: ${{ inputs.password }}
+        SEAFILE_REPO_ID: ${{ inputs.repo-id }}
+        REMOTE_PATH: ${{ inputs.remote-path }}
+        LOCAL_PATH: ${{ inputs.local-path }}
+        OVERWRITE: ${{ inputs.overwrite }}
