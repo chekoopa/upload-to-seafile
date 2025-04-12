@@ -1,7 +1,9 @@
 name: 'Seafile Upload'
 description: 'Upload files to a Seafile server'
 author: 'Mikhail Chekan'
-
+branding:
+  icon: 'upload-cloud'
+  color: 'orange'
 inputs:
   server-url:
     description: 'Seafile server URL (e.g., https://seafile.example.com)'
